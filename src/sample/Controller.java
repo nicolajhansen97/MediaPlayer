@@ -16,33 +16,48 @@ import java.nio.file.Paths;
 public class Controller {
 
     @FXML
-            ListView musicList;
+    ListView musicList;
 
     MediaPlayer mediaPlayer;
     Duration stopTime;
 
-    String One = "Hey There Delilah - Scarpetti";
-    String Two = "Test";
-    String Tree = "Test2";
-    String Four = "Test3";
-    String Five = "Test4";
+    String One = "Hey There Delilah";
+    String Two = "Waka Waka - This Time For Africa";
+    String Tree = "Paint it, Black";
+    String Four = "Someday";
+    String Five = "Thunderstruck";
 
     ObservableList<String> names = FXCollections.observableArrayList(
             One, Two, Tree, Four, Five);
     ListView<String> listView = new ListView<String>(names);
 
+
+
+
+
+
+
+
+
+
+
     public void initialize(){
 
         musicList.setItems(names);
+
     }
 
     public void music(){
 
+        String a = (String) musicList.getSelectionModel().getSelectedItem();
+        DB.selectSQL("Select fldFilePath from tblInformation WHERE fldTitle = '" + a + "'");
 
-       // String g = (String) musicList.getSelectionModel().getSelectedItem();
-        String g = "HeyThereDelilah.mp3";
-        Media h = new Media(Paths.get(g).toUri().toString());
-        mediaPlayer = new MediaPlayer(h);
+        String data = DB.getData();
+
+       // System.out.println(data);
+
+        Media MediaPlayer = new Media(Paths.get(data).toUri().toString());
+        mediaPlayer = new MediaPlayer(MediaPlayer);
         mediaPlayer.play();
     }
 

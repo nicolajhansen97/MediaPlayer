@@ -27,9 +27,9 @@
          <center>
             <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="bStart" layoutX="171.0" layoutY="154.0" mnemonicParsing="false" onAction="#music" text="Start musik" />
-                  <Button fx:id="bStop" layoutX="171.0" layoutY="189.0" mnemonicParsing="false" onAction="#pause" text="Pause musik" />
-                  <Button fx:id="bContinue" layoutX="171.0" layoutY="223.0" mnemonicParsing="false" onAction="#handleContinue" text="Forsæt musik" />
+                  <Button fx:id="bStart" layoutX="178.0" layoutY="286.0" mnemonicParsing="false" onAction="#music" text="Start musik" />
+                  <Button fx:id="bStop" layoutX="69.0" layoutY="286.0" mnemonicParsing="false" onAction="#pause" text="Pause musik" />
+                  <Button fx:id="bContinue" layoutX="279.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleContinue" text="Forsæt musik" />
                </children>
             </Pane>
          </center></BorderPane>
