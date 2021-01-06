@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreatePlaylist">
+   <children>
+      <BorderPane layoutX="-1.0" prefHeight="400.0" prefWidth="600.0">
+         <top>
+            <Pane prefHeight="283.0" prefWidth="376.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="tName" layoutX="207.0" layoutY="166.0" text="Give your playlist a name" />
+                  <Button fx:id="bCreate" layoutX="269.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" text="Create" />
+               </children>
+            </Pane>
+         </top>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
