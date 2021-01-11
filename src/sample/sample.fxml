@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#updatePlaylistAfter" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgb(150,150,150);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#handleUpdatePlaylistAfter" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: rgb(150,150,150);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <top>
       <Pane prefHeight="39.0" prefWidth="1000.0" style="-fx-background-color: rgb(100,100,100);" BorderPane.alignment="CENTER">
          <children>
@@ -28,7 +28,12 @@
                <font>
                   <Font name="Arial Bold" size="18.0" />
                </font></Label>
-            <Button fx:id="bCreate" layoutX="748.0" layoutY="5.0" mnemonicParsing="false" onAction="#createPlaylistMenu" style="-fx-background-color: rgb(100,100,100);" text="Create Playlist" textFill="WHITE">
+            <Button fx:id="bCreate" layoutX="748.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleCreatePlaylistMenu" style="-fx-background-color: rgb(100,100,100);" text="Create Playlist" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button fx:id="bDelete" layoutX="872.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" style="-fx-background-color: rgb(100,100,100);" text="Delete Playlist" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -41,8 +46,8 @@
          <children>
          </children>
          <children>
-            <ListView fx:id="lMusiclist" layoutX="-1.0" layoutY="45.0" prefHeight="607.0" prefWidth="263.0" style="-fx-background-color: rgb(120,120,120);" />
-            <TextField fx:id="tSearch" layoutX="34.0" layoutY="10.0" onKeyReleased="#test" prefHeight="25.0" prefWidth="194.0" style="-fx-background-color: rgb(100,100,100);" />
+            <ListView fx:id="lMusiclist" layoutX="-1.0" layoutY="45.0" onMouseClicked="#handleClearPersonPlaylist" prefHeight="607.0" prefWidth="263.0" style="-fx-background-color: rgb(120,120,120);" />
+            <TextField fx:id="tSearch" layoutX="34.0" layoutY="10.0" onKeyReleased="#handleSearchFunction" prefHeight="25.0" prefWidth="194.0" style="-fx-background-color: rgb(100,100,100);" />
             <ImageView fitHeight="29.0" fitWidth="26.0" layoutX="202.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@search.png" />
@@ -56,7 +61,7 @@
    <bottom>
       <Pane prefHeight="114.0" prefWidth="1000.0" style="-fx-background-color: rgb(100,100,100);" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="bStart" layoutX="310.0" layoutY="19.0" mnemonicParsing="false" onAction="#music" prefHeight="66.0" prefWidth="77.0" style="-fx-background-color: rgb(100,100,100);">
+            <Button fx:id="bStart" layoutX="310.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleMusic" prefHeight="66.0" prefWidth="77.0" style="-fx-background-color: rgb(100,100,100);">
                <graphic>
                   <ImageView fitHeight="83.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -64,7 +69,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="bStop" layoutX="600.0" layoutY="17.0" mnemonicParsing="false" onAction="#stopMusic" prefHeight="66.0" prefWidth="77.0" style="-fx-background-color: rgb(100,100,100);" visible="false">
+            <Button fx:id="bStop" layoutX="600.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleStopMusic" prefHeight="66.0" prefWidth="77.0" style="-fx-background-color: rgb(100,100,100);" visible="false">
                <graphic>
                   <ImageView fitHeight="83.0" fitWidth="67.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -91,6 +96,24 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button fx:id="bOpenPlaylist" layoutX="747.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleOpenPlaylist" style="-fx-background-color: rgb(100,100,100);" text="Open playlist" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
+            <Button fx:id="bClosePlaylist" layoutX="747.0" layoutY="15.0" mnemonicParsing="false" onAction="#handleClosePlaylist" style="-fx-background-color: rgb(100,100,100);" text="Close playlist" textFill="WHITE" visible="false">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <ComboBox fx:id="cAddToPlaylist" layoutX="14.0" layoutY="15.0" onAction="#handleAddtoPlaylist" prefWidth="150.0" promptText="Add to playlist" style="-fx-background-color: rgb(100,100,100);">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+            </ComboBox>
+            <Button fx:id="bRemoveSong" layoutX="871.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleRemoveSong" style="-fx-background-color: rgb(100,100,100);" text="Remove song" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </bottom>
@@ -111,24 +134,30 @@
             </ImageView>
             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgb(110,110,110);" GridPane.rowIndex="1">
                <children>
-                  <Label fx:id="lSong" layoutX="5.0" prefHeight="35.0" prefWidth="252.0" text="Ex: Song" textFill="WHITE" visible="false">
+                  <Label fx:id="lSong" layoutX="5.0" prefHeight="35.0" prefWidth="287.0" text="Ex: Song" textFill="WHITE" visible="false">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="193.0" layoutY="28.0" text="0:00" textFill="WHITE">
+                  <Label fx:id="lCurrentTime" layoutX="193.0" layoutY="28.0" text="0:00" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="236.0" layoutY="28.0" text="/0:00" textFill="WHITE">
+                  <Label fx:id="lTotalTime" layoutX="247.0" layoutY="28.0" text="0:00" textFill="WHITE">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <Label fx:id="lArtist" layoutX="255.0" prefHeight="35.0" prefWidth="223.0" text="Ex: Artist" textFill="WHITE" visible="false">
+                  <Label fx:id="lArtist" layoutX="287.0" prefHeight="35.0" prefWidth="191.0" text="Ex: Artist" textFill="WHITE" visible="false">
                      <font>
                         <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Slider fx:id="sProgress" layoutX="127.0" layoutY="54.0" onMouseClicked="#sliderChoice" onMouseReleased="#sliderChoice" prefHeight="11.0" prefWidth="231.0" />
+                  <Label layoutX="238.0" layoutY="28.0" text="/" textFill="WHITE">
+                     <font>
+                        <Font size="24.0" />
                      </font>
                   </Label>
                </children>
@@ -140,7 +169,7 @@
       <Pane prefHeight="647.0" prefWidth="254.0" style="-fx-background-color: rgb(110,110,110);" BorderPane.alignment="CENTER">
          <children>
             <ListView fx:id="lPlaylist" layoutX="-1.0" prefHeight="647.0" prefWidth="255.0" />
-            <ListView fx:id="lPlaylistSong" prefHeight="647.0" prefWidth="255.0" visible="false" />
+            <ListView fx:id="lPlaylistSong" onMouseClicked="#handleClearMainPlayList" prefHeight="647.0" prefWidth="255.0" visible="false" />
          </children>
       </Pane>
    </right>
