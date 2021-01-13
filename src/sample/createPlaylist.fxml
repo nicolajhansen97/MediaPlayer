@@ -6,19 +6,20 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreatePlaylist">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CreatePlaylist">
    <children>
-      <BorderPane layoutX="-1.0" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane layoutX="-1.0" prefHeight="300.0" prefWidth="409.0">
          <top>
-            <Pane prefHeight="283.0" prefWidth="376.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="283.0" prefWidth="376.0" style="-fx-background-color: rgb(100,100,100);" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="tName" layoutX="207.0" layoutY="166.0" text="Give your playlist a name" />
-                  <Button fx:id="bCreate" layoutX="269.0" layoutY="213.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" text="Create" />
+                  <TextField fx:id="tName" layoutX="111.0" layoutY="126.0" text="Give your playlist a name" />
+                  <Button fx:id="bCreate" layoutX="173.0" layoutY="167.0" mnemonicParsing="false" onAction="#handleCreatePlaylist" text="Create" />
+                  <Label fx:id="lMadeOrNot" layoutX="103.0" layoutY="95.0" text="Label" textFill="#d01919" visible="false" />
                </children>
             </Pane>
          </top>
          <center>
-            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+            <Pane prefHeight="341.0" prefWidth="400.0" style="-fx-background-color: rgb(100,100,100);" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
    </children>

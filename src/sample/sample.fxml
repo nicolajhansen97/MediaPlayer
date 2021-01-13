@@ -33,6 +33,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
+            <Button fx:id="bPlaythrough" layoutX="320.0" layoutY="7.0" mnemonicParsing="false" onAction="#repeatPlaylist" text="Button" />
             <Button fx:id="bDelete" layoutX="872.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" style="-fx-background-color: rgb(100,100,100);" text="Delete Playlist" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />

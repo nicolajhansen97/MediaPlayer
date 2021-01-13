@@ -1,5 +1,7 @@
 package sample;
 
+
+import javafx.scene.media.MediaPlayer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,13 +16,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -44,7 +45,15 @@ public class Controller {
     ObservableList<String> olSongsOnPersonalPlaylist = FXCollections.observableArrayList(); //ObservableList to store all the songs on peoples personal playlist
     boolean addToPlaylistWorkaround = true; //Work around so the action handler will only give a output once.
     String playlistChosen = ""; //Will store which playlist is chosen.
-    boolean personPlaylistChosenOrNot = false;
+    boolean personPlaylistChosenOrNot = false; //Avoid it from
+    MediaPlayer mediaPlayer; //Is the MediaPlayer
+    Duration stopTime; //Is used to pause and stop the song
+    Duration tim1, tim2; //Timer for the MediaPlayer to save the time
+    int min; //Store the timeframe of the song in minutes
+    int count = 0; //Is counting the the timeframe and make it run smooth
+    boolean done = false; //Is stopping the do while loop so its not starting multiple threads.
+    int myCount;
+    boolean isPlaying = false;
 
     @FXML
     ListView lMusiclist, lPlaylist, lPlaylistSong;
@@ -66,13 +75,6 @@ public class Controller {
 
     @FXML
     Slider sProgress;
-
-    MediaPlayer mediaPlayer; //Is the MediaPlayer
-    Duration stopTime; //Is used to pause and stop the song
-    Duration tim1, tim2; //Timer for the MediaPlayer to save the time
-    int min; //Store the timeframe of the song in minutes
-    int count = 0; //Is counting the the timeframe and make it run smooth
-    boolean done = false; //Is stopping the do while loop so its not starting multiple threads.
 
     /***
      * This function intialize will start whenever the program is opened. This gets all the information about playlistes etc, so its all loaded when the programs open.
@@ -116,7 +118,13 @@ public class Controller {
     /***
      * HandleMusic happens when the play buttom is pressed. This will load all information about what song is loaded and play it.
      */
-    public void handleMusic() {
+    public void handleMusic() throws InterruptedException {
+
+        if(isPlaying == true) {
+            mediaPlayer.stop();
+            isPlaying = false;
+        }
+            isPlaying = true;
 
         String song = "";
 
@@ -143,12 +151,10 @@ public class Controller {
 
         clearDatabaseConnection();
 
-
-
-
         Media MediaPlayer = new Media(Paths.get(dataSong).toUri().toString());
         mediaPlayer = new MediaPlayer(MediaPlayer);
         mediaPlayer.play();
+
         bStart.setVisible(false);
         bPause.setVisible(true);
         bStop.setVisible(true);
@@ -160,10 +166,10 @@ public class Controller {
         iAlbum.setImage(new Image(getClass().getResourceAsStream("" + dataAlbumPicture + "")));
         iAlbum.setVisible(true);
 
+
         done = false;
         count = 0;
         currentTimeLabel();
-
 
     }
 
@@ -531,7 +537,94 @@ public class Controller {
             }
         } while (true);
     }
+
+    public String repeatSongInitialize(String song) {
+
+        DB.selectSQL("Select fldArtist from tblInformation WHERE fldFilePath = '" + song + "'");
+        String dataArtist = DB.getData();
+
+        DB.selectSQL("Select fldTitle from tblInformation WHERE fldFilePath = '" + song + "'");
+        String dataTitle = DB.getData();
+
+        DB.selectSQL("Select fldAlbumPicture from tblInformation WHERE fldFilePath = '" + song + "'");
+        String dataAlbumPicture = DB.getData();
+
+        DB.selectSQL("Select fldLength from tblInformation WHERE fldFilePath = '" + song + "'");
+        String length = DB.getData();
+
+        clearDatabaseConnection();
+
+        bPause.setVisible(true);
+        bStop.setVisible(true);
+        lArtist.setText("by: " + dataArtist);
+        lSong.setText("Currently playing: " + dataTitle);
+        lTotalTime.setText(length);
+        lArtist.setVisible(true);
+        lSong.setVisible(true);
+        iAlbum.setImage(new Image(getClass().getResourceAsStream("" + dataAlbumPicture + "")));
+        iAlbum.setVisible(true);
+        done = false;
+        count = 0;
+        currentTimeLabel();
+        return "Hej";
+    }
+
+
+
+    String currentSong;
+
+    Iterator<String> itr;
+    ArrayList<String> alAutoplay = new ArrayList<>();
+    public void repeatPlaylist(ActionEvent actionEvent) {
+        alAutoplay.clear();
+
+        if(isPlaying == true) {
+            mediaPlayer.stop();
+            isPlaying = false;
+        }
+        isPlaying = true;
+        for (int i = 0; i < alSongsForPersonalPlaylist.size(); i++) {
+            String playlistSongs = alSongsForPersonalPlaylist.get(i);
+            DB.selectSQL("Select fldFilePath from tblInformation WHERE fldTitle = '" + playlistSongs.substring(0, playlistSongs.indexOf("-") - 1) + "'");
+            String dataSong = DB.getData();
+            alAutoplay.add(dataSong);
+        }
+        clearDatabaseConnection();
+        System.out.println(alAutoplay);
+
+        itr = alAutoplay.iterator();
+        play(itr.next());
+
+    }
+
+    int repeatThroughImages = 0;
+
+    public void play(String mediaFile){
+
+        Media MediaPlayer = new Media(Paths.get(mediaFile).toUri().toString());
+        mediaPlayer = new MediaPlayer(MediaPlayer);
+        mediaPlayer.play();
+        repeatSongInitialize(alAutoplay.get(repeatThroughImages));
+        mediaPlayer.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                mediaPlayer.stop();
+                repeatThroughImages++;
+                if (itr.hasNext()) {
+                    //Plays the subsequent files
+                    play(itr.next());
+                }
+                else {
+                    iAlbum.setVisible(false);
+                    lArtist.setVisible(false);
+                    lSong.setVisible(false);
+                }
+                return;
+            }
+        });
+    }
 }
+
 
 
 

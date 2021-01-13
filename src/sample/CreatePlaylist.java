@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
@@ -38,6 +39,9 @@ public class CreatePlaylist {
     @FXML
     TextField tName;
 
+    @FXML
+    Label lMadeOrNot;
+
     ArrayList<String> getPlaylist = new ArrayList<>();
     boolean isMade = false;
 
@@ -58,20 +62,30 @@ public class CreatePlaylist {
 
     public void handleCreatePlaylist(ActionEvent actionEvent) {
 
+        String check = null;
 
-        for (int i = 0; i <getPlaylist.size(); i++) {
 
-            String check = getPlaylist.get(i);
+          for (int i = 0; i < getPlaylist.size(); i++) {
 
-            if (check.equals(tName.getText())) {
-                tName.setText("This playlist name is already in use!");
-                isMade = true;
-                break;
-            }
-        }
+              check = getPlaylist.get(i);
+
+              if (check.equals(tName.getText())) {
+                  lMadeOrNot.setVisible(true);
+                  lMadeOrNot.setText("This playlist name is already in use!");
+                  isMade = true;
+                  break;
+              }
+          }
+              if(!check.equals(tName.getText()))
+             {
+              isMade = false;
+             }
+
 
         if(isMade == false)
         {
+            lMadeOrNot.setVisible(true);
+             lMadeOrNot.setText("Your playlist is successfully made!");
               DB.insertSQL("INSERT INTO tblAllPlaylist VALUES ('" + tName.getText() + "')");
               DB.insertSQL("CREATE TABLE "+tName.getText().replaceAll("\\s","")+"(fldSongNames nchar(70))");
 
