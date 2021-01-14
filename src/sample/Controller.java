@@ -59,7 +59,7 @@ public class Controller {
     ListView lMusiclist, lPlaylist, lPlaylistSong;
 
     @FXML
-    Button bContinue, bStart, bPause, bStop, bCreate, bOpenPlaylist, bClosePlaylist;
+    Button bContinue, bStart, bPause, bStop, bCreate, bOpenPlaylist, bClosePlaylist, bPlayThrough;
 
     @FXML
     TextField tSearch;
@@ -119,6 +119,7 @@ public class Controller {
      * HandleMusic happens when the play buttom is pressed. This will load all information about what song is loaded and play it.
      */
     public void handleMusic() throws InterruptedException {
+        try {
 
         if(isPlaying == true) {
             mediaPlayer.stop();
@@ -155,7 +156,7 @@ public class Controller {
         mediaPlayer = new MediaPlayer(MediaPlayer);
         mediaPlayer.play();
 
-        bStart.setVisible(false);
+       // bStart.setVisible(false);
         bPause.setVisible(true);
         bStop.setVisible(true);
         lArtist.setText("by: " + dataArtist);
@@ -170,6 +171,9 @@ public class Controller {
         done = false;
         count = 0;
         currentTimeLabel();
+        }catch (Exception e) {
+            System.out.println("You didnt chose a song, this made a error.");
+        }
 
     }
 
@@ -321,6 +325,7 @@ public class Controller {
      * @param actionEvent - will open the playlist as soon as the bottom is pressed.
      */
     public void handleOpenPlaylist(ActionEvent actionEvent) {
+        try {
         personPlaylistChosenOrNot = true;
         playlistChosen = (String) lPlaylist.getSelectionModel().getSelectedItem();
         DB.selectSQL("Select fldSongNames from " + playlistChosen.replaceAll("\\s", "") + "");
@@ -341,6 +346,11 @@ public class Controller {
         lPlaylist.setVisible(false);
         bOpenPlaylist.setVisible(false);
         bClosePlaylist.setVisible(true);
+        bPlayThrough.setVisible(true);
+
+        }catch (Exception e) {
+            System.out.println("You didnt chose a playlist to open, this made an error");
+        }
 
     }
 
@@ -358,6 +368,7 @@ public class Controller {
         lPlaylistSong.setVisible(false);
         bOpenPlaylist.setVisible(true);
         bClosePlaylist.setVisible(false);
+        bPlayThrough.setVisible(false);
 
     }
 

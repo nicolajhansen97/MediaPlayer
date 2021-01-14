@@ -33,7 +33,6 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button fx:id="bPlaythrough" layoutX="320.0" layoutY="7.0" mnemonicParsing="false" onAction="#repeatPlaylist" text="Button" />
             <Button fx:id="bDelete" layoutX="872.0" layoutY="5.0" mnemonicParsing="false" onAction="#handleDeletePlaylist" style="-fx-background-color: rgb(100,100,100);" text="Delete Playlist" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
@@ -105,6 +104,7 @@
                <font>
                   <Font size="14.0" />
                </font></Button>
+            <Button fx:id="bPlayThrough" layoutX="810.0" layoutY="60.0" mnemonicParsing="false" onAction="#repeatPlaylist" style="-fx-background-color: rgb(100,100,100);" text="Play playlist" textFill="WHITE" visible="false"/>
             <ComboBox fx:id="cAddToPlaylist" layoutX="14.0" layoutY="15.0" onAction="#handleAddtoPlaylist" prefWidth="150.0" promptText="Add to playlist" style="-fx-background-color: rgb(100,100,100);">
                <cursor>
                   <Cursor fx:constant="DEFAULT" />
